@@ -243,15 +243,22 @@ function calc(p) {
 }
 
 async function fetchPrice(ticker) {
-  const endpoints = [
-    `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`,
-    `https://query2.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`,
+  const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`;
+  const yahooV7  = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}`;
+  const proxies = [
+    `https://corsproxy.io/?${encodeURIComponent(yahooUrl)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooUrl)}`,
+    `https://corsproxy.io/?${encodeURIComponent(yahooV7)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooV7)}`,
   ];
-  for (const url of endpoints) {
+  for (const url of proxies) {
     try {
-      const r = await fetch(url, { signal: AbortSignal.timeout(8000) });
+      const r = await fetch(url, { signal: AbortSignal.timeout(9000) });
+      if (!r.ok) continue;
       const d = await r.json();
-      const px = d?.chart?.result?.[0]?.meta?.regularMarketPrice;
+      const px = d?.chart?.result?.[0]?.meta?.regularMarketPrice
+               ?? d?.quoteResponse?.result?.[0]?.regularMarketPrice
+               ?? null;
       if (px) { prices[ticker] = px; return px; }
     } catch(e) {}
   }
