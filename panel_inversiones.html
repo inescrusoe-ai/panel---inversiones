@@ -88,7 +88,7 @@
   <div class="header">
     <div>
       <h1>Panel de Inversiones</h1>
-      <p>Método Maximus Trading &nbsp;·&nbsp; 13 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance</p>
+      <p>Método Maximus Trading &nbsp;·&nbsp; 13 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
     </div>
     <button class="btn btn-primary" onclick="fetchAll()">&#8635; Actualizar precios</button>
   </div>
@@ -197,7 +197,6 @@
 const POS = [
   {ticker:'META', dir:'Long', obj:'LARGO PLAZO',     qty:1, entrada:636.82, fecha:'06/03/2026'},
   {ticker:'MSFT', dir:'Long', obj:'LARGO PLAZO',     qty:1, entrada:405.88, fecha:'09/03/2026'},
-  {ticker:'GLD',  dir:'Long', obj:'IDEA MES 1',      qty:1, entrada:426.83, fecha:'04/04/2026'},
 
   {ticker:'WDC',  dir:'Long', obj:'TORTUGA',         qty:1, entrada:359.00, fecha:'13/04/2026'},
   {ticker:'CPNG', dir:'Long', obj:'TORTUGA',         qty:1, entrada:21.51,  fecha:'13/04/2026'},
@@ -206,13 +205,16 @@ const POS = [
   {ticker:'MRK',  dir:'Long', obj:'IDEA MES 1',      qty:2, entrada:117.43, fecha:'03/04/2026'},
   {ticker:'JNJ',  dir:'Long', obj:'IDEA MES 1',      qty:1, entrada:242.30, fecha:'03/04/2026'},
   {ticker:'BSX',  dir:'Long', obj:'LARGO PLAZO (M)', qty:1, entrada:71.45,  fecha:'13/02/2026'},
-  {ticker:'CVX',  dir:'Long', obj:'IDEA MES 1',      qty:1, entrada:197.31, fecha:'03/04/2026'},
   {ticker:'MARA', dir:'Short',obj:'SHORT',           qty:4, entrada:10.29,  fecha:'13/04/2026'},
   {ticker:'JBL',  dir:'Long', obj:'TORTUGA',         qty:1, entrada:316.00, fecha:'14/04/2026'},
-  {ticker:'ADI',  dir:'Long', obj:'ONEILL',          qty:1, entrada:368.34, fecha:'14/04/2026'},
+  {ticker:'CRDO', dir:'Long', obj:'EXPLOSIVA',        qty:1, entrada:180.42, fecha:'01/05/2026'},
+  {ticker:'CAT',  dir:'Long', obj:'IDEA MES',          qty:1, entrada:890.62, fecha:'01/05/2026'},
+  {ticker:'ADI',  dir:'Long', obj:'ONEILL',             qty:1, entrada:368.34, fecha:'14/04/2026'},
 
 ];
 const HIST = [
+  {ticker:'GLD', dir:'Long',obj:'IDEA MES 1',qty:1,entrada:426.83,cierre:425.07,pnl:-1.76,rent:-0.0041,fCompra:'04/04/2026',fCierre:'01/05/2026'},
+  {ticker:'CVX', dir:'Long',obj:'IDEA MES 1',qty:1,entrada:197.31,cierre:190.59,pnl:-6.72,rent:-0.0341,fCompra:'03/04/2026',fCierre:'01/05/2026'},
   {ticker:'LRCX',dir:'Long',obj:'CORTO PLAZO',qty:1,entrada:266.75,cierre:243.00,pnl:-23.75,rent:-0.0891,fCompra:'11/04/2026',fCierre:'29/04/2026'},
   {ticker:'ANET',dir:'Long',obj:'ONEILL',qty:2,entrada:165.02,cierre:165.10,pnl:0.16,rent:0.0005,fCompra:'14/04/2026',fCierre:'28/04/2026'},
   {ticker:'TER', dir:'Long',obj:'TORTUGA',qty:1,entrada:362.99,cierre:380.00,pnl:17.01,rent:0.0469,fCompra:'13/04/2026',fCierre:'28/04/2026'},
