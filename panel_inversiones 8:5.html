@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel de Inversiones — Método Maximus</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #ffffff; --bg2: #f5f5f3; --bg3: #ebebea;
+    --text: #1a1a19; --text2: #6b6b68; --text3: #9b9b97;
+    --border: rgba(0,0,0,0.12); --border2: rgba(0,0,0,0.2);
+    --green: #0F6E56; --green-bg: #E1F5EE; --green-mid: #1D9E75;
+    --red: #A32D2D; --red-bg: #FCEBEB; --red-mid: #E24B4A;
+    --amber: #633806; --amber-bg: #FAEEDA; --amber-mid: #BA7517;
+    --blue: #0C447C; --blue-bg: #E6F1FB; --blue-mid: #378ADD;
+    --purple: #3C3489; --purple-bg: #EEEDFE; --purple-mid: #7F77DD;
+    --radius: 8px; --radius-lg: 12px;
+  }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif; font-size: 13px; background: var(--bg3); color: var(--text); min-height: 100vh; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 24px 20px; }
+  .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .header h1 { font-size: 20px; font-weight: 600; color: var(--text); }
+  .header p { font-size: 12px; color: var(--text2); margin-top: 3px; }
+  .btn { padding: 8px 16px; font-size: 13px; border: 1px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); cursor: pointer; transition: all .15s; font-weight: 500; }
+  .btn:hover { background: var(--bg2); }
+  .btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .btn-primary:hover { opacity: .85; }
+  .btn-sm { padding: 4px 10px; font-size: 11px; }
+  .status-bar { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); margin-bottom: 16px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 14px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .dot-idle { background: var(--text3); }
+  .dot-live { background: var(--green-mid); }
+  .dot-err { background: var(--red-mid); }
+  @keyframes pulse { 0%,100%{opacity:.3}50%{opacity:1} }
+  .dot-loading { background: var(--amber-mid); animation: pulse 1s ease-in-out infinite; }
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .metric { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; }
+  .metric-lbl { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 5px; }
+  .metric-val { font-size: 22px; font-weight: 600; color: var(--text); }
+  .metric-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 16px 20px; margin-bottom: 12px; }
+  .card-title { font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 14px; }
+  .tabs { display: flex; gap: 0; border-bottom: 1px solid var(--border); margin-bottom: 16px; overflow-x: auto; }
+  .tab { padding: 9px 18px; font-size: 13px; cursor: pointer; border: none; background: transparent; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap; transition: color .15s; }
+  .tab.active { color: var(--text); border-bottom-color: var(--text); font-weight: 600; }
+  .tab:hover:not(.active) { color: var(--text); }
+  .panel { display: none; } .panel.active { display: block; }
+  .tbl-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: var(--radius-lg); }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: var(--bg2); font-size: 11px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; padding: 9px 12px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+  th.l { text-align: left; }
+  td { padding: 9px 12px; border-bottom: 1px solid var(--border); color: var(--text); text-align: right; vertical-align: middle; }
+  td.l { text-align: left; font-weight: 500; }
+  tr:last-child td { border-bottom: none; }
+  tr.dr:hover td { background: var(--bg2); transition: background .1s; }
+  tfoot td { background: var(--bg2); font-weight: 600; border-top: 2px solid var(--border2); }
+  .badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px; }
+  .long { background: var(--green-bg); color: var(--green); }
+  .short { background: var(--purple-bg); color: var(--purple); }
+  .pos { color: var(--green); font-weight: 600; }
+  .neg { color: var(--red); font-weight: 600; }
+  .tag { display: inline-block; font-size: 10px; padding: 1px 5px; border-radius: 3px; background: var(--bg2); color: var(--text2); border: 1px solid var(--border); }
+  .bar-track { height: 7px; background: var(--bg2); border-radius: 4px; overflow: hidden; margin-top: 4px; }
+  .bar-pos { height: 100%; background: var(--green-mid); border-radius: 4px; }
+  .bar-neg { height: 100%; background: var(--red-mid); border-radius: 4px; }
+  .bar-purple { height: 100%; background: var(--purple-mid); border-radius: 4px; }
+  .alert-warn { padding: 10px 14px; border-radius: var(--radius); font-size: 12px; background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-mid); margin-bottom: 10px; }
+  .alert-ok { padding: 10px 14px; border-radius: var(--radius); font-size: 12px; background: var(--green-bg); color: var(--green); border: 1px solid var(--green-mid); margin-bottom: 10px; }
+  .ig { display: flex; flex-direction: column; gap: 5px; }
+  .ig label { font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: .04em; font-weight: 500; }
+  .ig input { padding: 7px 10px; font-size: 13px; border: 1px solid var(--border2); border-radius: var(--radius); background: var(--bg); color: var(--text); }
+  .ig input:focus { outline: none; border-color: var(--blue-mid); }
+  .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 14px; }
+  .sim-metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .prog-row { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+  .prog-wrap { margin-bottom: 14px; }
+  .dist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  @media (max-width: 600px) { .dist-grid { grid-template-columns: 1fr; } .header { flex-direction: column; align-items: flex-start; gap: 12px; } }
+  .spinner { display: inline-block; width: 12px; height: 12px; border: 2px solid var(--border); border-top-color: var(--amber-mid); border-radius: 50%; animation: spin .7s linear infinite; vertical-align: middle; margin-right: 4px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div>
+      <h1>Panel de Inversiones</h1>
+      <p>Método Maximus Trading &nbsp;·&nbsp; 16 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
+    </div>
+    <button class="btn btn-primary" onclick="fetchAll()">&#8635; Actualizar precios</button>
+  </div>
+
+  <div class="status-bar">
+    <span class="dot dot-idle" id="sdot"></span>
+    <span id="stxt">Presioná "Actualizar precios" para cargar cotizaciones en tiempo real</span>
+    <span id="supd" style="margin-left:auto;font-size:11px;color:var(--text3)"></span>
+  </div>
+
+  <div class="metrics" id="metrics-grid"></div>
+  <div id="alerts-wrap"></div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('activas',this)">Posiciones</button>
+    <button class="tab" onclick="showTab('pnl',this)">P&amp;L</button>
+    <button class="tab" onclick="showTab('dist',this)">Distribución</button>
+    <button class="tab" onclick="showTab('historial',this)">Historial</button>
+    <button class="tab" onclick="showTab('depositos',this)">Depósitos ARS</button>
+    <button class="tab" onclick="showTab('simulador',this)">Simulador 5 años</button>
+  </div>
+
+  <div id="tab-activas" class="panel active">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th class="l">Ticker</th><th>Dir.</th><th class="l">Objetivo</th>
+          <th>Qty</th><th>Entrada ($)</th><th>Precio actual ($)</th>
+          <th>Costo ($)</th><th>Valor ($)</th><th>P&amp;L ($)</th><th>P&amp;L (%)</th><th>Peso</th>
+        </tr></thead>
+        <tbody id="tbl-body"></tbody>
+        <tfoot id="tbl-foot"></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-pnl" class="panel">
+    <div class="card"><div class="card-title">Retorno por posición</div><div id="pnl-bars"></div></div>
+  </div>
+
+  <div id="tab-dist" class="panel">
+    <div class="dist-grid">
+      <div class="card"><div class="card-title">Por objetivo</div><div id="dist-obj"></div></div>
+      <div class="card"><div class="card-title">Por dirección</div><div id="dist-dir"></div></div>
+    </div>
+    <div class="card"><div class="card-title">Peso por posición</div><div id="dist-pos"></div></div>
+  </div>
+
+  <div id="tab-historial" class="panel">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr>
+          <th class="l">Ticker</th><th>Dir.</th><th class="l">Objetivo</th>
+          <th>Qty</th><th>Entrada ($)</th><th>Cierre ($)</th>
+          <th>P&amp;L ($)</th><th>Rentab.</th><th>F. compra</th><th>F. cierre</th>
+        </tr></thead>
+        <tbody id="hist-body"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-depositos" class="panel">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th class="l">Fecha</th><th>Monto (ARS)</th></tr></thead>
+        <tbody id="dep-body"></tbody>
+        <tfoot id="dep-foot"></tfoot>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-simulador" class="panel">
+    <div class="card">
+      <div class="card-title">Parámetros — editá y recalculá</div>
+      <div class="input-grid">
+        <div class="ig"><label>Capital inicial ($)</label><input type="number" id="s-cap" value="0" min="0"></div>
+        <div class="ig"><label>Aporte mensual ($)</label><input type="number" id="s-ap" value="1900" min="0"></div>
+        <div class="ig"><label>Rendimiento mensual (%)</label><input type="number" id="s-rend" value="2.5" step="0.1" min="0"></div>
+        <div class="ig"><label>Plazo (años)</label><input type="number" id="s-pl" value="5" min="1" max="30"></div>
+        <div class="ig"><label>Meta ingreso pasivo ($)</label><input type="number" id="s-meta" value="2000" min="0"></div>
+        <div class="ig"><label>Tasa retiro mensual (%)</label><input type="number" id="s-ret" value="0.5" step="0.1" min="0.1"></div>
+      </div>
+      <button class="btn btn-primary" onclick="simular()">Calcular proyección</button>
+    </div>
+    <div id="sim-out" style="display:none">
+      <div class="sim-metrics" id="sim-metrics"></div>
+      <div id="sim-veredicto" style="margin-bottom:12px"></div>
+      <div class="card">
+        <div class="card-title">Evolución del capital proyectado</div>
+        <div style="position:relative;width:100%;height:260px"><canvas id="sim-chart"></canvas></div>
+        <div style="display:flex;gap:20px;margin-top:10px;font-size:11px;color:var(--text2)">
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:3px;background:var(--green-mid);display:inline-block;border-radius:2px"></span>Con interés compuesto</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:14px;height:3px;background:var(--text3);display:inline-block;border-radius:2px"></span>Solo aportes</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Progreso hacia la independencia financiera</div>
+        <div id="sim-progreso"></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const POS = [
+  {ticker:'META', dir:'Long', obj:'LARGO PLAZO',     qty:1, entrada:636.82, fecha:'06/03/2026'},
+  {ticker:'MSFT', dir:'Long', obj:'LARGO PLAZO',     qty:1, entrada:405.88, fecha:'09/03/2026'},
+
+  {ticker:'WDC',  dir:'Long', obj:'TORTUGA',         qty:1, entrada:359.00, fecha:'13/04/2026'},
+  {ticker:'CACI', dir:'Long', obj:'LARGO PLAZO (M)', qty:1, entrada:540.75, fecha:'12/04/2026'},
+
+  {ticker:'MRK',  dir:'Long', obj:'IDEA MES 1',      qty:2, entrada:117.43, fecha:'03/04/2026'},
+  {ticker:'JNJ',  dir:'Long', obj:'IDEA MES 1',      qty:1, entrada:242.30, fecha:'03/04/2026'},
+  {ticker:'BSX',  dir:'Long', obj:'LARGO PLAZO (M)', qty:1, entrada:71.45,  fecha:'13/02/2026'},
+  {ticker:'MARA', dir:'Short',obj:'SHORT',           qty:4, entrada:10.29,  fecha:'13/04/2026'},
+  {ticker:'JBL',  dir:'Long', obj:'TORTUGA',         qty:1, entrada:316.00, fecha:'14/04/2026'},
+  {ticker:'ORCL', dir:'Long', obj:'ONEILL',            qty:1, entrada:189.34, fecha:'06/05/2026'},
+  {ticker:'SOLS', dir:'Long', obj:'TORTUGA',           qty:1, entrada:83.30,  fecha:'05/05/2026'},
+  {ticker:'GGAL', dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:41.09,  fecha:'04/05/2026'},
+  {ticker:'NEM',  dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:110.35, fecha:'04/05/2026'},
+  {ticker:'CRDO', dir:'Long', obj:'EXPLOSIVA',        qty:1, entrada:180.42, fecha:'01/05/2026'},
+  {ticker:'CAT',  dir:'Long', obj:'IDEA MES',          qty:1, entrada:890.62, fecha:'01/05/2026'},
+  {ticker:'ADI',  dir:'Long', obj:'ONEILL',             qty:1, entrada:368.34, fecha:'14/04/2026'},
+
+];
+const HIST = [
+  {ticker:'GLD', dir:'Long',obj:'IDEA MES 1',qty:1,entrada:426.83,cierre:425.07,pnl:-1.76,rent:-0.0041,fCompra:'04/04/2026',fCierre:'01/05/2026'},
+  {ticker:'CVX', dir:'Long',obj:'IDEA MES 1',qty:1,entrada:197.31,cierre:190.59,pnl:-6.72,rent:-0.0341,fCompra:'03/04/2026',fCierre:'01/05/2026'},
+  {ticker:'CPNG',dir:'Long',obj:'TORTUGA',qty:1,entrada:21.51,cierre:18.20,pnl:-3.31,rent:-0.1539,fCompra:'13/04/2026',fCierre:'06/05/2026'},
+  {ticker:'LRCX',dir:'Long',obj:'CORTO PLAZO',qty:1,entrada:266.75,cierre:243.00,pnl:-23.75,rent:-0.0891,fCompra:'11/04/2026',fCierre:'29/04/2026'},
+  {ticker:'ANET',dir:'Long',obj:'ONEILL',qty:2,entrada:165.02,cierre:165.10,pnl:0.16,rent:0.0005,fCompra:'14/04/2026',fCierre:'28/04/2026'},
+  {ticker:'TER', dir:'Long',obj:'TORTUGA',qty:1,entrada:362.99,cierre:380.00,pnl:17.01,rent:0.0469,fCompra:'13/04/2026',fCierre:'28/04/2026'},
+  {ticker:'BOIL',dir:'Long',obj:'CORTO PLAZO',qty:1,entrada:13.68,cierre:13.25,pnl:-0.43,rent:-0.0314,fCompra:'07/04/2026',fCierre:'20/04/2026'},
+];
+const DEP = [
+  {fecha:'08/05/2026',monto:2000000},
+  {fecha:'14/04/2026',monto:650000},{fecha:'13/04/2026',monto:750000},{fecha:'12/04/2026',monto:120000},
+  {fecha:'05/04/2026',monto:1380000},{fecha:'03/04/2026',monto:300000},{fecha:'07/03/2026',monto:1000000},
+  {fecha:'06/03/2026',monto:900000},{fecha:'03/03/2026',monto:500000},{fecha:'03/03/2026',monto:305228},
+  {fecha:'03/03/2026',monto:123532},{fecha:'02/03/2026',monto:11240},
+];
+
+let prices = {};
+let simChartInst = null;
+
+const f$ = n => n == null ? '—' : '$' + n.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+const fPct = n => { if (n == null) return '—'; const s = (n*100).toFixed(2)+'%'; return n >= 0 ? '+'+s : s; };
+const fPnl = n => { if (n == null) return '—'; const s = '$'+Math.abs(n).toFixed(2); return n >= 0 ? '+'+s : '-'+s; };
+const cls = n => n == null ? '' : n >= 0 ? 'pos' : 'neg';
+
+function calc(p) {
+  const px = prices[p.ticker] ?? null;
+  const costo = p.entrada * p.qty;
+  const valor = px != null ? px * p.qty : null;
+  const pnl = px != null ? (p.dir === 'Short' ? (p.entrada - px) * p.qty : (px - p.entrada) * p.qty) : null;
+  const pnlPct = pnl != null && costo > 0 ? pnl / costo : null;
+  return { costo, valor, pnl, pnlPct, px };
+}
+
+async function fetchPrice(ticker) {
+  const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`;
+  const yahooV7  = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}`;
+  const proxies = [
+    `https://corsproxy.io/?${encodeURIComponent(yahooUrl)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooUrl)}`,
+    `https://corsproxy.io/?${encodeURIComponent(yahooV7)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooV7)}`,
+  ];
+  for (const url of proxies) {
+    try {
+      const r = await fetch(url, { signal: AbortSignal.timeout(9000) });
+      if (!r.ok) continue;
+      const d = await r.json();
+      const px = d?.chart?.result?.[0]?.meta?.regularMarketPrice
+               ?? d?.quoteResponse?.result?.[0]?.regularMarketPrice
+               ?? null;
+      if (px) { prices[ticker] = px; return px; }
+    } catch(e) {}
+  }
+  return null;
+}
+
+async function fetchAll() {
+  const dot = document.getElementById('sdot');
+  const txt = document.getElementById('stxt');
+  dot.className = 'dot dot-loading';
+  txt.innerHTML = '<span class="spinner"></span> Conectando con Yahoo Finance...';
+  const tickers = [...new Set(POS.map(p => p.ticker))];
+  let ok = 0;
+  for (const t of tickers) {
+    txt.innerHTML = `<span class="spinner"></span> Obteniendo ${t}...`;
+    const px = await fetchPrice(t);
+    if (px) ok++;
+    renderMetrics(); renderTable();
+  }
+  dot.className = ok > 0 ? 'dot dot-live' : 'dot dot-err';
+  txt.textContent = ok === tickers.length
+    ? `${ok} precios actualizados en tiempo real`
+    : ok > 0
+      ? `${ok}/${tickers.length} precios obtenidos — algunos pueden no estar disponibles fuera del horario de mercado`
+      : 'No se pudieron obtener precios. Verificá tu conexión o intentá durante el horario de mercado (Lun-Vie 9:30-16:00 ET).';
+  document.getElementById('supd').textContent =
+    'Actualizado: ' + new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
+  renderAll();
+}
+
+function renderAll() {
+  renderMetrics(); renderAlerts(); renderTable();
+  const t = document.querySelector('.panel.active').id.replace('tab-','');
+  if (t === 'pnl') renderPnlBars();
+  if (t === 'dist') renderDist();
+}
+
+function renderMetrics() {
+  const rows = POS.map(calc);
+  const totCosto = rows.reduce((s,r) => s+r.costo, 0);
+  const hasPx = rows.some(r => r.valor != null);
+  const totValor = hasPx ? rows.reduce((s,r) => s+(r.valor??r.costo), 0) : null;
+  const totPnl = hasPx ? rows.reduce((s,r) => s+(r.pnl??0), 0) : null;
+  const totPct = totPnl != null && totCosto > 0 ? totPnl/totCosto : null;
+  const winners = rows.filter(r => r.pnl != null && r.pnl > 0).length;
+  const losers  = rows.filter(r => r.pnl != null && r.pnl < 0).length;
+  document.getElementById('metrics-grid').innerHTML = `
+    <div class="metric"><div class="metric-lbl">Capital invertido</div><div class="metric-val">${f$(totCosto)}</div><div class="metric-sub">${POS.length} posiciones activas</div></div>
+    <div class="metric"><div class="metric-lbl">Valor actual</div><div class="metric-val">${totValor!=null?f$(totValor):'—'}</div><div class="metric-sub">${hasPx?'Tiempo real':'Sin cotizaciones'}</div></div>
+    <div class="metric"><div class="metric-lbl">P&amp;L total</div><div class="metric-val ${cls(totPnl)}">${totPnl!=null?fPnl(totPnl):'—'}</div><div class="metric-sub">${totPct!=null?fPct(totPct):''}</div></div>
+    <div class="metric"><div class="metric-lbl">Ganadoras / perdedoras</div><div class="metric-val">${hasPx?winners+' / '+losers:'—'}</div><div class="metric-sub">${POS.filter(p=>p.dir==='Short').length} short · ${POS.filter(p=>p.dir==='Long').length} long</div></div>
+    <div class="metric"><div class="metric-lbl">Aportado (ARS)</div><div class="metric-val" style="font-size:16px">$8.040.000</div><div class="metric-sub">12 depósitos</div></div>
+  `;
+}
+
+function renderAlerts() {
+  const rows = POS.map((p,i) => ({...p,...calc(p)}));
+  const totValor = rows.reduce((s,r) => s+(r.valor??r.costo), 0);
+  let html = '';
+  rows.forEach(r => {
+    const peso = totValor > 0 ? (r.valor??r.costo)/totValor : 0;
+    if (peso > 0.15) html += `<div class="alert-warn">⚠ ${r.ticker} supera el 15% del portafolio (${(peso*100).toFixed(1)}%). Revisar concentración.</div>`;
+  });
+  if (!html && Object.keys(prices).length > 0)
+    html = '<div class="alert-ok">✓ Sin alertas de concentración. Portafolio dentro de parámetros.</div>';
+  document.getElementById('alerts-wrap').innerHTML = html;
+}
+
+function renderTable() {
+  const rows = POS.map((p,i) => ({...p,...calc(p)}));
+  const totValor = rows.reduce((s,r) => s+(r.valor??r.costo), 0);
+  document.getElementById('tbl-body').innerHTML = rows.map(r => {
+    const peso = totValor > 0 ? ((r.valor??r.costo)/totValor*100) : 0;
+    const pesoAlert = peso > 15;
+    const pxCell = r.px != null ? `<strong>${f$(r.px)}</strong>` : '<span style="color:var(--text3)">—</span>';
+    const dirBadge = r.dir==='Long' ? `<span class="badge long">Long</span>` : `<span class="badge short">Short</span>`;
+    return `<tr class="dr">
+      <td class="l">${r.ticker}</td>
+      <td style="text-align:center">${dirBadge}</td>
+      <td class="l" style="font-weight:400;font-size:11px;color:var(--text2)">${r.obj}</td>
+      <td>${r.qty}</td>
+      <td>${f$(r.entrada)}</td>
+      <td>${pxCell}</td>
+      <td>${f$(r.costo)}</td>
+      <td>${r.valor!=null?f$(r.valor):'—'}</td>
+      <td>${r.pnl!=null?`<span class="${cls(r.pnl)}">${fPnl(r.pnl)}</span>`:'—'}</td>
+      <td>${r.pnlPct!=null?`<span class="${cls(r.pnlPct)}">${fPct(r.pnlPct)}</span>`:'—'}</td>
+      <td style="${pesoAlert?'color:var(--red);font-weight:600':''}">${peso.toFixed(1)}%${pesoAlert?' ⚠':''}</td>
+    </tr>`;
+  }).join('');
+  const totCosto = rows.reduce((s,r)=>s+r.costo,0);
+  const hasPx = rows.some(r=>r.valor!=null);
+  const totV = hasPx ? rows.reduce((s,r)=>s+(r.valor??r.costo),0) : null;
+  const totPnl = hasPx ? rows.reduce((s,r)=>s+(r.pnl??0),0) : null;
+  const totPct = totPnl!=null&&totCosto>0 ? totPnl/totCosto : null;
+  document.getElementById('tbl-foot').innerHTML = `<tr>
+    <td class="l" colspan="6">Total</td>
+    <td>${f$(totCosto)}</td>
+    <td>${totV!=null?f$(totV):'—'}</td>
+    <td class="${cls(totPnl)}">${totPnl!=null?fPnl(totPnl):'—'}</td>
+    <td class="${cls(totPct)}">${totPct!=null?fPct(totPct):'—'}</td>
+    <td>100%</td>
+  </tr>`;
+}
+
+function renderPnlBars() {
+  const rows = POS.map(p=>({...p,...calc(p)})).filter(r=>r.pnl!=null);
+  if (!rows.length) { document.getElementById('pnl-bars').innerHTML='<p style="color:var(--text2);padding:1rem">Actualizá los precios primero.</p>'; return; }
+  rows.sort((a,b)=>b.pnlPct-a.pnlPct);
+  const maxAbs = Math.max(...rows.map(r=>Math.abs(r.pnlPct)));
+  document.getElementById('pnl-bars').innerHTML = rows.map(r => {
+    const pct = maxAbs > 0 ? (Math.abs(r.pnlPct)/maxAbs*100).toFixed(1) : '0';
+    const barCls = r.dir==='Short' ? 'bar-purple' : r.pnl>=0 ? 'bar-pos' : 'bar-neg';
+    return `<div style="margin-bottom:12px">
+      <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px">
+        <span style="font-weight:600">${r.ticker}${r.dir==='Short'?' <span class="tag">short</span>':''}</span>
+        <span class="${cls(r.pnl)}">${fPnl(r.pnl)} &nbsp; ${fPct(r.pnlPct)}</span>
+      </div>
+      <div class="bar-track"><div class="${barCls}" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+function renderDist() {
+  const rows = POS.map(p=>({...p,...calc(p)}));
+  const totV = rows.reduce((s,r)=>s+(r.valor??r.costo),0);
+  const byObj = {};
+  rows.forEach(r => { const v=r.valor??r.costo; byObj[r.obj]=(byObj[r.obj]||0)+v; });
+  const maxObj = Math.max(...Object.values(byObj));
+  document.getElementById('dist-obj').innerHTML = Object.entries(byObj).sort((a,b)=>b[1]-a[1]).map(([k,v]) => {
+    const pct = totV > 0 ? (v/totV*100).toFixed(1) : 0;
+    return `<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>${k}</span><span style="color:var(--text2)">${pct}%</span></div><div class="bar-track"><div class="bar-pos" style="width:${(v/maxObj*100).toFixed(1)}%"></div></div></div>`;
+  }).join('');
+  const byDir = {Long:0,Short:0};
+  rows.forEach(r => { byDir[r.dir]=(byDir[r.dir]||0)+(r.valor??r.costo); });
+  document.getElementById('dist-dir').innerHTML = Object.entries(byDir).map(([k,v]) => {
+    const pct = totV > 0 ? (v/totV*100).toFixed(1) : 0;
+    const barCls = k==='Short' ? 'bar-purple' : 'bar-pos';
+    return `<div style="margin-bottom:9px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>${k}</span><span style="color:var(--text2)">${pct}%</span></div><div class="bar-track"><div class="${barCls}" style="width:${pct}%"></div></div></div>`;
+  }).join('');
+  const sorted = [...rows].sort((a,b)=>(b.valor??b.costo)-(a.valor??a.costo));
+  const maxV = (sorted[0]?.valor??sorted[0]?.costo) || 1;
+  document.getElementById('dist-pos').innerHTML = sorted.map(r => {
+    const v=r.valor??r.costo; const pct=totV>0?(v/totV*100).toFixed(1):0;
+    const barCls = r.dir==='Short'?'bar-purple':'bar-pos';
+    return `<div style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span style="font-weight:600">${r.ticker}</span><span style="color:var(--text2)">${f$(v)} · ${pct}%</span></div><div class="bar-track"><div class="${barCls}" style="width:${(v/maxV*100).toFixed(1)}%"></div></div></div>`;
+  }).join('');
+}
+
+function renderHistorial() {
+  document.getElementById('hist-body').innerHTML = HIST.map(h => {
+    const dirBadge = h.dir==='Long' ? `<span class="badge long">Long</span>` : `<span class="badge short">Short</span>`;
+    return `<tr class="dr"><td class="l">${h.ticker}</td><td style="text-align:center">${dirBadge}</td><td class="l" style="font-size:11px;color:var(--text2)">${h.obj}</td><td>${h.qty}</td><td>${f$(h.entrada)}</td><td>${f$(h.cierre)}</td><td class="${cls(h.pnl)}">${fPnl(h.pnl)}</td><td class="${cls(h.rent)}">${fPct(h.rent)}</td><td style="font-size:11px">${h.fCompra}</td><td style="font-size:11px">${h.fCierre}</td></tr>`;
+  }).join('');
+}
+
+function renderDepositos() {
+  document.getElementById('dep-body').innerHTML = DEP.map(d =>
+    `<tr class="dr"><td class="l">${d.fecha}</td><td>$${d.monto.toLocaleString('es-AR')}</td></tr>`
+  ).join('');
+  const tot = DEP.reduce((s,d)=>s+d.monto,0);
+  document.getElementById('dep-foot').innerHTML = `<tr><td class="l">Total</td><td>$${tot.toLocaleString('es-AR')}</td></tr>`;
+}
+
+function simular() {
+  const rows = POS.map(calc);
+  const capActual = rows.reduce((s,r)=>s+(r.valor??r.costo),0);
+  const capital = parseFloat(document.getElementById('s-cap').value) || capActual || 0;
+  const aporte  = parseFloat(document.getElementById('s-ap').value)   || 1900;
+  const rend    = parseFloat(document.getElementById('s-rend').value) || 2.5;
+  const plazo   = parseInt(document.getElementById('s-pl').value)     || 5;
+  const meta    = parseFloat(document.getElementById('s-meta').value) || 2000;
+  const retiro  = parseFloat(document.getElementById('s-ret').value)  || 0.5;
+  const meses = plazo * 12; const r = rend / 100;
+  let c = capital;
+  const labels = [], data = [], dataSin = [];
+  for (let i = 0; i <= meses; i++) {
+    labels.push(i % 12 === 0 ? 'Año ' + (i/12) : '');
+    data.push(parseFloat(c.toFixed(2)));
+    dataSin.push(parseFloat((capital + aporte * i).toFixed(2)));
+    if (i < meses) c = c * (1 + r) + aporte;
+  }
+  const capFinal = data[data.length - 1];
+  const ingresoMes = capFinal * retiro / 100;
+  const alcanza = ingresoMes >= meta;
+  const totAportado = capital + aporte * meses;
+  const ganancia = capFinal - totAportado;
+  const metaCapital = meta / (retiro / 100);
+
+  document.getElementById('sim-metrics').innerHTML = `
+    <div class="metric"><div class="metric-lbl">Capital a ${plazo} años</div><div class="metric-val pos">$${Math.round(capFinal).toLocaleString('es-AR')}</div></div>
+    <div class="metric"><div class="metric-lbl">Ingreso pasivo/mes</div><div class="metric-val ${alcanza?'pos':''}" style="${!alcanza?'color:var(--amber)':''}">$${Math.round(ingresoMes).toLocaleString('es-AR')}</div><div class="metric-sub">${retiro}% retiro/mes</div></div>
+    <div class="metric"><div class="metric-lbl">Total aportado</div><div class="metric-val">$${Math.round(totAportado).toLocaleString('es-AR')}</div></div>
+    <div class="metric"><div class="metric-lbl">Ganancia compuesta</div><div class="metric-val pos">+$${Math.round(ganancia).toLocaleString('es-AR')}</div><div class="metric-sub">${(ganancia/totAportado*100).toFixed(0)}% extra</div></div>
+  `;
+  const vd = document.getElementById('sim-veredicto');
+  if (alcanza) {
+    vd.innerHTML = `<div class="alert-ok">✓ En camino a la independencia financiera — con ${rend}%/mes y $${aporte}/mes alcanzás $${Math.round(ingresoMes).toLocaleString()}/mes en ${plazo} años. Meta $${meta}/mes cumplida.</div>`;
+  } else {
+    const falta = meta - ingresoMes;
+    vd.innerHTML = `<div class="alert-warn">⚠ Requiere ajuste — generás $${Math.round(ingresoMes).toLocaleString()}/mes, faltan $${Math.round(falta).toLocaleString()}/mes para la meta. Subí el rendimiento, el aporte o extendé el plazo.</div>`;
+  }
+  const pctMeta = Math.min(100, capFinal/metaCapital*100);
+  document.getElementById('sim-progreso').innerHTML = `
+    <div class="prog-wrap">
+      <div class="prog-row"><span>Capital proyectado: $${Math.round(capFinal).toLocaleString('es-AR')}</span><span>Necesario: $${Math.round(metaCapital).toLocaleString('es-AR')}</span></div>
+      <div class="bar-track" style="height:10px"><div class="bar-pos" style="width:${pctMeta.toFixed(1)}%;height:100%"></div></div>
+      <div style="font-size:11px;color:var(--text2);margin-top:4px">${pctMeta.toFixed(1)}% del capital necesario para generar $${meta}/mes</div>
+    </div>
+    <div class="prog-wrap">
+      <div class="prog-row"><span>Ingreso proyectado: $${Math.round(ingresoMes).toLocaleString()}/mes</span><span>Meta: $${meta.toLocaleString()}/mes</span></div>
+      <div class="bar-track" style="height:10px"><div class="${alcanza?'bar-pos':'bar-neg'}" style="width:${Math.min(100,ingresoMes/meta*100).toFixed(1)}%;height:100%"></div></div>
+    </div>
+  `;
+  if (simChartInst) simChartInst.destroy();
+  simChartInst = new Chart(document.getElementById('sim-chart'), {
+    type: 'line',
+    data: { labels, datasets: [
+      {label:'Con interés compuesto', data, borderColor:'#1D9E75', backgroundColor:'rgba(29,158,117,0.08)', borderWidth:2, pointRadius:0, fill:true, tension:0.3},
+      {label:'Solo aportes', data:dataSin, borderColor:'#888780', backgroundColor:'transparent', borderWidth:1.5, borderDash:[5,4], pointRadius:0, fill:false}
+    ]},
+    options: {
+      responsive:true, maintainAspectRatio:false,
+      plugins: {legend:{display:false}, tooltip:{callbacks:{label:c=>'$'+Math.round(c.raw).toLocaleString('es-AR')}}},
+      scales: {
+        x: {ticks:{maxRotation:0,font:{size:10},autoSkip:true,maxTicksLimit:plazo+1}, grid:{display:false}},
+        y: {ticks:{callback:v=>'$'+Math.round(v/1000)+'k',font:{size:10}}, grid:{color:'rgba(0,0,0,0.05)'}}
+      }
+    }
+  });
+  document.getElementById('sim-out').style.display = 'block';
+}
+
+function showTab(t, el) {
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+t).classList.add('active');
+  if (t==='pnl') renderPnlBars();
+  if (t==='dist') renderDist();
+  if (t==='historial') renderHistorial();
+  if (t==='depositos') renderDepositos();
+}
+
+const capActual = POS.map(calc).reduce((s,r)=>s+(r.valor??r.costo),0);
+document.getElementById('s-cap').value = Math.round(capActual);
+renderMetrics(); renderTable(); renderHistorial(); renderDepositos();
+</script>
+</body>
+</html>
