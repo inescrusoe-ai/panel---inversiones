@@ -88,7 +88,7 @@
   <div class="header">
     <div>
       <h1>Panel de Inversiones</h1>
-      <p>Método Maximus Trading &nbsp;·&nbsp; 16 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
+      <p>Método Maximus Trading &nbsp;·&nbsp; 18 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
     </div>
     <button class="btn btn-primary" onclick="fetchAll()">&#8635; Actualizar precios</button>
   </div>
@@ -206,6 +206,8 @@ const POS = [
   {ticker:'BSX',  dir:'Long', obj:'LARGO PLAZO (M)', qty:1, entrada:71.45,  fecha:'13/02/2026'},
   {ticker:'MARA', dir:'Short',obj:'SHORT',           qty:4, entrada:10.29,  fecha:'13/04/2026'},
   {ticker:'JBL',  dir:'Long', obj:'TORTUGA',         qty:1, entrada:316.00, fecha:'14/04/2026'},
+  {ticker:'CSCO', dir:'Long', obj:'IDEA MES',          qty:1, entrada:96.37,  fecha:'11/05/2026'},
+  {ticker:'CRS',  dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:422.00, fecha:'11/05/2026'},
   {ticker:'ORCL', dir:'Long', obj:'ONEILL',            qty:1, entrada:189.34, fecha:'06/05/2026'},
   {ticker:'SOLS', dir:'Long', obj:'TORTUGA',           qty:1, entrada:83.30,  fecha:'05/05/2026'},
   {ticker:'GGAL', dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:41.09,  fecha:'04/05/2026'},
@@ -225,6 +227,7 @@ const HIST = [
   {ticker:'BOIL',dir:'Long',obj:'CORTO PLAZO',qty:1,entrada:13.68,cierre:13.25,pnl:-0.43,rent:-0.0314,fCompra:'07/04/2026',fCierre:'20/04/2026'},
 ];
 const DEP = [
+  {fecha:'08/05/2026',monto:2000000},
   {fecha:'14/04/2026',monto:650000},{fecha:'13/04/2026',monto:750000},{fecha:'12/04/2026',monto:120000},
   {fecha:'05/04/2026',monto:1380000},{fecha:'03/04/2026',monto:300000},{fecha:'07/03/2026',monto:1000000},
   {fecha:'06/03/2026',monto:900000},{fecha:'03/03/2026',monto:500000},{fecha:'03/03/2026',monto:305228},
@@ -316,7 +319,7 @@ function renderMetrics() {
     <div class="metric"><div class="metric-lbl">Valor actual</div><div class="metric-val">${totValor!=null?f$(totValor):'—'}</div><div class="metric-sub">${hasPx?'Tiempo real':'Sin cotizaciones'}</div></div>
     <div class="metric"><div class="metric-lbl">P&amp;L total</div><div class="metric-val ${cls(totPnl)}">${totPnl!=null?fPnl(totPnl):'—'}</div><div class="metric-sub">${totPct!=null?fPct(totPct):''}</div></div>
     <div class="metric"><div class="metric-lbl">Ganadoras / perdedoras</div><div class="metric-val">${hasPx?winners+' / '+losers:'—'}</div><div class="metric-sub">${POS.filter(p=>p.dir==='Short').length} short · ${POS.filter(p=>p.dir==='Long').length} long</div></div>
-    <div class="metric"><div class="metric-lbl">Aportado (ARS)</div><div class="metric-val" style="font-size:16px">$6.040.000</div><div class="metric-sub">11 depósitos</div></div>
+    <div class="metric"><div class="metric-lbl">Aportado (ARS)</div><div class="metric-val" style="font-size:16px">$8.040.000</div><div class="metric-sub">12 depósitos</div></div>
   `;
 }
 
