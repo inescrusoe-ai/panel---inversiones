@@ -269,25 +269,8 @@ function calc(p) {
 }
 
 async function fetchPrice(ticker) {
-  const yahooUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=1d`;
-  const yahooV7  = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${ticker}`;
-  const proxies = [
-    `https://corsproxy.io/?${encodeURIComponent(yahooUrl)}`,
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooUrl)}`,
-    `https://corsproxy.io/?${encodeURIComponent(yahooV7)}`,
-    `https://api.allorigins.win/raw?url=${encodeURIComponent(yahooV7)}`,
-  ];
-  for (const url of proxies) {
-    try {
-      const r = await fetch(url, { signal: AbortSignal.timeout(9000) });
-      if (!r.ok) continue;
-      const d = await r.json();
-      const px = d?.chart?.result?.[0]?.meta?.regularMarketPrice
-               ?? d?.quoteResponse?.result?.[0]?.regularMarketPrice
-               ?? null;
-      if (px) { prices[ticker] = px; return px; }
-    } catch(e) {}
-  }
+  // Precios servidos desde prices.json generado por GitHub Actions
+  if (prices[ticker]) return prices[ticker];
   return null;
 }
 
@@ -295,23 +278,27 @@ async function fetchAll() {
   const dot = document.getElementById('sdot');
   const txt = document.getElementById('stxt');
   dot.className = 'dot dot-loading';
-  txt.innerHTML = '<span class="spinner"></span> Conectando con Yahoo Finance...';
-  const tickers = [...new Set(POS.map(p => p.ticker))];
-  let ok = 0;
-  for (const t of tickers) {
-    txt.innerHTML = `<span class="spinner"></span> Obteniendo ${t}...`;
-    const px = await fetchPrice(t);
-    if (px) ok++;
-    renderMetrics(); renderTable();
+  txt.innerHTML = '<span class="spinner"></span> Cargando prices.json...';
+  try {
+    const r = await fetch('prices.json?t=' + Date.now(), { signal: AbortSignal.timeout(10000) });
+    if (!r.ok) throw new Error('No se encontró prices.json');
+    const d = await r.json();
+    prices = d.prices || {};
+    const ok = Object.keys(prices).length;
+    const total = [...new Set(POS.map(p => p.ticker))].length;
+    dot.className = ok > 0 ? 'dot dot-live' : 'dot dot-err';
+    txt.textContent = ok === total
+      ? `${ok} precios actualizados — datos de GitHub Actions`
+      : ok > 0
+        ? `${ok}/${total} precios cargados`
+        : 'No se pudieron cargar los precios.';
+    document.getElementById('supd').textContent = d.updated
+      ? 'Actualizado: ' + d.updated
+      : 'Actualizado: ' + new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
+  } catch(e) {
+    dot.className = 'dot dot-err';
+    txt.textContent = 'Error cargando prices.json — verificá que GitHub Actions esté configurado.';
   }
-  dot.className = ok > 0 ? 'dot dot-live' : 'dot dot-err';
-  txt.textContent = ok === tickers.length
-    ? `${ok} precios actualizados en tiempo real`
-    : ok > 0
-      ? `${ok}/${tickers.length} precios obtenidos — algunos pueden no estar disponibles fuera del horario de mercado`
-      : 'No se pudieron obtener precios. Verificá tu conexión o intentá durante el horario de mercado (Lun-Vie 9:30-16:00 ET).';
-  document.getElementById('supd').textContent =
-    'Actualizado: ' + new Date().toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
   renderAll();
 }
 
@@ -332,11 +319,13 @@ function renderMetrics() {
   const winners = rows.filter(r => r.pnl != null && r.pnl > 0).length;
   const losers  = rows.filter(r => r.pnl != null && r.pnl < 0).length;
   const PNL_REALIZADO = -45.08;
-  const totPnlCombinado = totPnl != null ? totPnl + PNL_REALIZADO : null;
+  // P&L combinado: usar 0 para no realizado si no hay precios aún
+  const pnlNoRealizado = totPnl != null ? totPnl : 0;
+  const totPnlCombinado = pnlNoRealizado + PNL_REALIZADO;
   // Capital base total = capital invertido activo + capital invertido en cerradas
   const CAPITAL_CERRADAS = 276.38+146.24+68.48+36.32+115.56+22.92+115.00+98.28+290.21+76.59+235.97+233.14+47.41+393.81+13.68+330.04+362.99+266.75+426.83+197.31+21.51+96.37+10.00+30.00+10.00+10.00+10.00+20.00;
   const capitalBase = totCosto + CAPITAL_CERRADAS;
-  const retornoTotal = totPnlCombinado != null ? totPnlCombinado / capitalBase : null;
+  const retornoTotal = capitalBase > 0 ? totPnlCombinado / capitalBase : null;
   document.getElementById('metrics-grid').innerHTML = `
     <div class="metric"><div class="metric-lbl">Capital invertido activo</div><div class="metric-val">${f$(totCosto)}</div><div class="metric-sub">${POS.length} posiciones activas</div></div>
     <div class="metric"><div class="metric-lbl">Valor actual</div><div class="metric-val">${totValor!=null?f$(totValor):'—'}</div><div class="metric-sub">${hasPx?'Tiempo real':'Sin cotizaciones'}</div></div>
