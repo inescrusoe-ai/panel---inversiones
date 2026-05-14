@@ -206,7 +206,7 @@ const POS = [
   {ticker:'BSX',  dir:'Long', obj:'LARGO PLAZO (M)', qty:1, entrada:71.45,  fecha:'13/02/2026'},
   {ticker:'MARA', dir:'Short',obj:'SHORT',           qty:4, entrada:10.29,  fecha:'13/04/2026'},
   {ticker:'JBL',  dir:'Long', obj:'TORTUGA',         qty:1, entrada:316.00, fecha:'14/04/2026'},
-  {ticker:'CSCO', dir:'Long', obj:'IDEA MES',          qty:1, entrada:96.37,  fecha:'11/05/2026'},
+  {ticker:'KTOS', dir:'Long', obj:'MOMENTUM',          qty:1, entrada:56.74,  fecha:'12/05/2026'},
   {ticker:'CRS',  dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:422.00, fecha:'11/05/2026'},
   {ticker:'ORCL', dir:'Long', obj:'ONEILL',            qty:1, entrada:189.34, fecha:'06/05/2026'},
   {ticker:'SOLS', dir:'Long', obj:'TORTUGA',           qty:1, entrada:83.30,  fecha:'05/05/2026'},
@@ -220,10 +220,27 @@ const POS = [
 const HIST = [
   {ticker:'GLD', dir:'Long',obj:'IDEA MES 1',qty:1,entrada:426.83,cierre:425.07,pnl:-1.76,rent:-0.0041,fCompra:'04/04/2026',fCierre:'01/05/2026'},
   {ticker:'CVX', dir:'Long',obj:'IDEA MES 1',qty:1,entrada:197.31,cierre:190.59,pnl:-6.72,rent:-0.0341,fCompra:'03/04/2026',fCierre:'01/05/2026'},
+  {ticker:'RCL',  dir:'Long', obj:'—', qty:1, entrada:276.38,cierre:290.03,pnl:13.65, rent:0.0494, fCompra:'09/03/2026',fCierre:'09/03/2026'},
+  {ticker:'DG',   dir:'Long', obj:'—', qty:1, entrada:146.24,cierre:130.86,pnl:-15.38,rent:-0.1052,fCompra:'10/03/2026',fCierre:'12/03/2026'},
+  {ticker:'BSX',  dir:'Long', obj:'—', qty:1, entrada:68.48, cierre:71.14, pnl:2.66,  rent:0.0389, fCompra:'11/03/2026',fCierre:'17/03/2026'},
+  {ticker:'FXI',  dir:'Long', obj:'—', qty:1, entrada:36.32, cierre:37.07, pnl:0.75,  rent:0.0207, fCompra:'11/03/2026',fCierre:'17/03/2026'},
+  {ticker:'USO',  dir:'Long', obj:'—', qty:1, entrada:115.56,cierre:115.10,pnl:-0.46, rent:-0.0040,fCompra:'12/03/2026',fCierre:'24/03/2026'},
+  {ticker:'AM',   dir:'Short',obj:'—', qty:1, entrada:22.92, cierre:23.40, pnl:-0.48, rent:-0.0209,fCompra:'17/03/2026',fCierre:'24/03/2026'},
+  {ticker:'USO',  dir:'Short',obj:'—', qty:1, entrada:115.00,cierre:109.29,pnl:5.71,  rent:0.0497, fCompra:'24/03/2026',fCierre:'25/03/2026'},
+  {ticker:'MRVL', dir:'Short',obj:'—', qty:1, entrada:98.28, cierre:94.98, pnl:3.30,  rent:0.0336, fCompra:'25/03/2026',fCierre:'27/03/2026'},
+  {ticker:'GOOGL',dir:'Long', obj:'—', qty:1, entrada:290.21,cierre:292.91,pnl:2.70,  rent:0.0093, fCompra:'25/03/2026',fCierre:'01/04/2026'},
+  {ticker:'KO',   dir:'Long', obj:'—', qty:1, entrada:76.59, cierre:77.09, pnl:0.50,  rent:0.0065, fCompra:'06/03/2026',fCierre:'06/04/2026'},
+  {ticker:'HON',  dir:'Long', obj:'—', qty:1, entrada:235.97,cierre:227.80,pnl:-8.17, rent:-0.0346,fCompra:'06/03/2026',fCierre:'06/04/2026'},
+  {ticker:'USO',  dir:'Short',obj:'—', qty:2, entrada:116.57,cierre:142.21,pnl:-51.28,rent:-0.2196,fCompra:'25/03/2026',fCierre:'07/04/2026'},
+  {ticker:'GGAL', dir:'Short',obj:'—', qty:1, entrada:47.41, cierre:48.95, pnl:-1.54, rent:-0.0325,fCompra:'09/04/2026',fCierre:'09/04/2026'},
+  {ticker:'AMAT', dir:'Long', obj:'—', qty:1, entrada:393.81,cierre:393.30,pnl:-0.51, rent:-0.0013,fCompra:'17/04/2026',fCierre:'17/04/2026'},
+  {ticker:'CSCO',dir:'Long',obj:'IDEA MES',qty:1,entrada:96.37,cierre:116.73,pnl:20.36,rent:0.2113,fCompra:'11/05/2026',fCierre:'14/05/2026'},
   {ticker:'CPNG',dir:'Long',obj:'TORTUGA',qty:1,entrada:21.51,cierre:18.20,pnl:-3.31,rent:-0.1539,fCompra:'13/04/2026',fCierre:'06/05/2026'},
   {ticker:'LRCX',dir:'Long',obj:'CORTO PLAZO',qty:1,entrada:266.75,cierre:243.00,pnl:-23.75,rent:-0.0891,fCompra:'11/04/2026',fCierre:'29/04/2026'},
   {ticker:'ANET',dir:'Long',obj:'ONEILL',qty:2,entrada:165.02,cierre:165.10,pnl:0.16,rent:0.0005,fCompra:'14/04/2026',fCierre:'28/04/2026'},
   {ticker:'TER', dir:'Long',obj:'TORTUGA',qty:1,entrada:362.99,cierre:380.00,pnl:17.01,rent:0.0469,fCompra:'13/04/2026',fCierre:'28/04/2026'},
+  {ticker:'VXJ6', dir:'Short',obj:'Futuros', qty:1, entrada:25.00, cierre:23.90, pnl:1.69,  rent:0.0676, fCompra:'18/03/2026',fCierre:'23/03/2026'},
+  {ticker:'BTC/USD',dir:'Short',obj:'Cripto',qty:1,entrada:74336.36,cierre:73516.04,pnl:0.22,rent:0.0001,fCompra:'14/04/2026',fCierre:'16/04/2026'},
   {ticker:'BOIL',dir:'Long',obj:'CORTO PLAZO',qty:1,entrada:13.68,cierre:13.25,pnl:-0.43,rent:-0.0314,fCompra:'07/04/2026',fCierre:'20/04/2026'},
 ];
 const DEP = [
@@ -320,6 +337,7 @@ function renderMetrics() {
     <div class="metric"><div class="metric-lbl">P&amp;L total</div><div class="metric-val ${cls(totPnl)}">${totPnl!=null?fPnl(totPnl):'—'}</div><div class="metric-sub">${totPct!=null?fPct(totPct):''}</div></div>
     <div class="metric"><div class="metric-lbl">Ganadoras / perdedoras</div><div class="metric-val">${hasPx?winners+' / '+losers:'—'}</div><div class="metric-sub">${POS.filter(p=>p.dir==='Short').length} short · ${POS.filter(p=>p.dir==='Long').length} long</div></div>
     <div class="metric"><div class="metric-lbl">Aportado (ARS)</div><div class="metric-val" style="font-size:16px">$8.040.000</div><div class="metric-sub">12 depósitos</div></div>
+    <div class="metric"><div class="metric-lbl">P&amp;L realizado total</div><div class="metric-val neg">-$45.08</div><div class="metric-sub">Desde 06/03/2026</div></div>
   `;
 }
 
