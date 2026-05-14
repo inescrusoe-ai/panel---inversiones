@@ -283,7 +283,9 @@ async function fetchAll() {
     const r = await fetch('https://inescrusoe-ai.github.io/panel---inversiones/prices.json?t=' + Date.now(), { signal: AbortSignal.timeout(10000) });
     if (!r.ok) throw new Error('No se encontró prices.json');
     const d = await r.json();
+    console.log('prices.json response:', JSON.stringify(d).substring(0, 200));
     prices = d.prices || {};
+    console.log('prices loaded:', Object.keys(prices).length, prices);
     const ok = Object.keys(prices).length;
     const total = [...new Set(POS.map(p => p.ticker))].length;
     dot.className = ok > 0 ? 'dot dot-live' : 'dot dot-err';
