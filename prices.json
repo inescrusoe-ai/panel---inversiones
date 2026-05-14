@@ -1,24 +1,24 @@
 {
-  "updated": "2026-05-14 21:37 UTC",
-  "prices": {},
-  "errors": [
-    "META",
-    "MSFT",
-    "MRK",
-    "JNJ",
-    "BSX",
-    "CACI",
-    "WDC",
-    "JBL",
-    "ADI",
-    "CRDO",
-    "CAT",
-    "NEM",
-    "GGAL",
-    "SOLS",
-    "ORCL",
-    "CRS",
-    "KTOS",
-    "MARA"
-  ]
+  "updated": "2026-05-14 21:46 UTC",
+  "prices": {
+    "META": 618.43,
+    "MSFT": 409.43,
+    "MRK": 113.41,
+    "JNJ": 230.8,
+    "BSX": 53.55,
+    "CACI": 504.18,
+    "WDC": 489.15,
+    "JBL": 354.34,
+    "ADI": 426.79,
+    "CRDO": 184.54,
+    "CAT": 920.22,
+    "NEM": 116.33,
+    "GGAL": 41.85,
+    "SOLS": 86.81,
+    "ORCL": 195.61,
+    "CRS": 429.58,
+    "KTOS": 54.85,
+    "MARA": 13.29
+  },
+  "errors": []
 }
