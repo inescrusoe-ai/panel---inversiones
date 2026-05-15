@@ -88,7 +88,7 @@
   <div class="header">
     <div>
       <h1>Panel de Inversiones</h1>
-      <p>Método Maximus Trading &nbsp;·&nbsp; 18 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
+      <p>Método Maximus Trading &nbsp;·&nbsp; 16 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
     </div>
     <button class="btn btn-primary" onclick="fetchAll()">&#8635; Actualizar precios</button>
   </div>
@@ -209,7 +209,6 @@ const POS = [
   {ticker:'KTOS', dir:'Long', obj:'MOMENTUM',          qty:1, entrada:56.74,  fecha:'12/05/2026'},
   {ticker:'CRS',  dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:422.00, fecha:'11/05/2026'},
   {ticker:'ORCL', dir:'Long', obj:'ONEILL',            qty:1, entrada:189.34, fecha:'06/05/2026'},
-  {ticker:'SOLS', dir:'Long', obj:'TORTUGA',           qty:1, entrada:83.30,  fecha:'05/05/2026'},
   {ticker:'GGAL', dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:41.09,  fecha:'04/05/2026'},
   {ticker:'NEM',  dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:110.35, fecha:'04/05/2026'},
   {ticker:'CRDO', dir:'Long', obj:'EXPLOSIVA',        qty:1, entrada:180.42, fecha:'01/05/2026'},
@@ -234,6 +233,8 @@ const HIST = [
   {ticker:'USO',  dir:'Short',obj:'—', qty:2, entrada:116.57,cierre:142.21,pnl:-51.28,rent:-0.2196,fCompra:'25/03/2026',fCierre:'07/04/2026'},
   {ticker:'GGAL', dir:'Short',obj:'—', qty:1, entrada:47.41, cierre:48.95, pnl:-1.54, rent:-0.0325,fCompra:'09/04/2026',fCierre:'09/04/2026'},
   {ticker:'AMAT', dir:'Long', obj:'—', qty:1, entrada:393.81,cierre:393.30,pnl:-0.51, rent:-0.0013,fCompra:'17/04/2026',fCierre:'17/04/2026'},
+  {ticker:'SOLS',dir:'Long',obj:'TORTUGA',qty:1,entrada:83.30,cierre:83.80,pnl:0.50,rent:0.0060,fCompra:'05/05/2026',fCierre:'15/05/2026'},
+  {ticker:'JBL', dir:'Long',obj:'TORTUGA',qty:1,entrada:316.00,cierre:340.62,pnl:24.62,rent:0.0779,fCompra:'17/04/2026',fCierre:'15/05/2026'},
   {ticker:'CSCO',dir:'Long',obj:'IDEA MES',qty:1,entrada:96.37,cierre:116.73,pnl:20.36,rent:0.2113,fCompra:'11/05/2026',fCierre:'14/05/2026'},
   {ticker:'CPNG',dir:'Long',obj:'TORTUGA',qty:1,entrada:21.51,cierre:18.20,pnl:-3.31,rent:-0.1539,fCompra:'13/04/2026',fCierre:'06/05/2026'},
   {ticker:'LRCX',dir:'Long',obj:'CORTO PLAZO',qty:1,entrada:266.75,cierre:243.00,pnl:-23.75,rent:-0.0891,fCompra:'11/04/2026',fCierre:'29/04/2026'},
@@ -283,9 +284,7 @@ async function fetchAll() {
     const r = await fetch('https://inescrusoe-ai.github.io/panel---inversiones/prices.json?t=' + Date.now(), { signal: AbortSignal.timeout(10000) });
     if (!r.ok) throw new Error('No se encontró prices.json');
     const d = await r.json();
-    console.log('prices.json response:', JSON.stringify(d).substring(0, 200));
     prices = d.prices || {};
-    console.log('prices loaded:', Object.keys(prices).length, prices);
     const ok = Object.keys(prices).length;
     const total = [...new Set(POS.map(p => p.ticker))].length;
     dot.className = ok > 0 ? 'dot dot-live' : 'dot dot-err';
@@ -320,7 +319,7 @@ function renderMetrics() {
   const totPct = totPnl != null && totCosto > 0 ? totPnl/totCosto : null;
   const winners = rows.filter(r => r.pnl != null && r.pnl > 0).length;
   const losers  = rows.filter(r => r.pnl != null && r.pnl < 0).length;
-  const PNL_REALIZADO = -45.08;
+  const PNL_REALIZADO = -19.96;
   // P&L combinado: usar 0 para no realizado si no hay precios aún
   const pnlNoRealizado = totPnl != null ? totPnl : 0;
   const totPnlCombinado = pnlNoRealizado + PNL_REALIZADO;
