@@ -244,6 +244,7 @@ const HIST = [
   {ticker:'BOIL',dir:'Long',obj:'CORTO PLAZO',qty:1,entrada:13.68,cierre:13.25,pnl:-0.43,rent:-0.0314,fCompra:'07/04/2026',fCierre:'20/04/2026'},
 ];
 const DEP = [
+  {fecha:'15/05/2026',monto:1000000},
   {fecha:'08/05/2026',monto:2000000},
   {fecha:'14/04/2026',monto:650000},{fecha:'13/04/2026',monto:750000},{fecha:'12/04/2026',monto:120000},
   {fecha:'05/04/2026',monto:1380000},{fecha:'03/04/2026',monto:300000},{fecha:'07/03/2026',monto:1000000},
@@ -333,7 +334,7 @@ function renderMetrics() {
     <div class="metric"><div class="metric-lbl">P&amp;L realizado</div><div class="metric-val neg">-$45.08</div><div class="metric-sub">Desde 06/03/2026</div></div>
     <div class="metric"><div class="metric-lbl">Retorno total cartera</div><div class="metric-val ${retornoTotal!=null?(retornoTotal>=0?'pos':'neg'):''}">${retornoTotal!=null?fPct(retornoTotal):'—'}</div><div class="metric-sub">Realizadas + abiertas</div></div>
     <div class="metric"><div class="metric-lbl">Ganadoras / perdedoras</div><div class="metric-val">${hasPx?winners+' / '+losers:'—'}</div><div class="metric-sub">${POS.filter(p=>p.dir==='Short').length} short · ${POS.filter(p=>p.dir==='Long').length} long</div></div>
-    <div class="metric"><div class="metric-lbl">Aportado (ARS)</div><div class="metric-val" style="font-size:16px">$8.040.000</div><div class="metric-sub">12 depósitos</div></div>
+    <div class="metric"><div class="metric-lbl">Aportado (ARS)</div><div class="metric-val" style="font-size:16px">$9.040.000</div><div class="metric-sub">13 depósitos</div></div>
   `;
 }
 
