@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 
 TICKERS = [
     "META", "MSFT", "MRK", "JNJ", "BSX", "CACI",
-    "WDC", "JBL", "ADI", "CRDO", "CAT", "NEM",
-    "GGAL", "SOLS", "ORCL", "CRS", "KTOS", "MARA"
+    "ADI", "CRDO", "CAT", "NEM",
+    "GGAL", "ORCL", "CRS", "KTOS", "MARA"
 ]
 
 prices = {}
@@ -14,8 +14,6 @@ errors = []
 for ticker in TICKERS:
     try:
         t = yf.Ticker(ticker)
-        
-        # Method 1: history (most reliable)
         hist = t.history(period="2d")
         if not hist.empty:
             price = float(hist['Close'].iloc[-1])
@@ -23,8 +21,6 @@ for ticker in TICKERS:
                 prices[ticker] = round(price, 2)
                 print(f"OK {ticker}: ${price:.2f}")
                 continue
-        
-        # Method 2: fast_info
         try:
             fi = t.fast_info
             price = getattr(fi, 'last_price', None) or getattr(fi, 'previous_close', None)
@@ -34,8 +30,6 @@ for ticker in TICKERS:
                 continue
         except Exception:
             pass
-
-        # Method 3: info dict
         try:
             info = t.info
             price = info.get('regularMarketPrice') or info.get('previousClose') or info.get('currentPrice')
@@ -45,10 +39,8 @@ for ticker in TICKERS:
                 continue
         except Exception:
             pass
-
         errors.append(ticker)
         print(f"ERROR {ticker}: no price found")
-
     except Exception as e:
         errors.append(ticker)
         print(f"ERROR {ticker}: {e}")
