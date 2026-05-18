@@ -331,7 +331,7 @@ function renderMetrics() {
     <div class="metric"><div class="metric-lbl">Capital invertido activo</div><div class="metric-val">${f$(totCosto)}</div><div class="metric-sub">${POS.length} posiciones activas</div></div>
     <div class="metric"><div class="metric-lbl">Valor actual</div><div class="metric-val">${totValor!=null?f$(totValor):'—'}</div><div class="metric-sub">${hasPx?'Tiempo real':'Sin cotizaciones'}</div></div>
     <div class="metric"><div class="metric-lbl">P&amp;L no realizado</div><div class="metric-val ${cls(totPnl)}">${totPnl!=null?fPnl(totPnl):'—'}</div><div class="metric-sub">${totPct!=null?fPct(totPct):''}</div></div>
-    <div class="metric"><div class="metric-lbl">P&amp;L realizado</div><div class="metric-val neg">-$45.08</div><div class="metric-sub">Desde 06/03/2026</div></div>
+    <div class="metric"><div class="metric-lbl">P&amp;L realizado</div><div class="metric-val pos">+$85.05</div><div class="metric-sub">Desde 06/03/2026</div></div>
     <div class="metric"><div class="metric-lbl">Retorno total cartera</div><div class="metric-val ${retornoTotal!=null?(retornoTotal>=0?'pos':'neg'):''}">${retornoTotal!=null?fPct(retornoTotal):'—'}</div><div class="metric-sub">Realizadas + abiertas</div></div>
     <div class="metric"><div class="metric-lbl">Ganadoras / perdedoras</div><div class="metric-val">${hasPx?winners+' / '+losers:'—'}</div><div class="metric-sub">${POS.filter(p=>p.dir==='Short').length} short · ${POS.filter(p=>p.dir==='Long').length} long</div></div>
     <div class="metric"><div class="metric-lbl">Aportado (ARS)</div><div class="metric-val" style="font-size:16px">$9.040.000</div><div class="metric-sub">13 depósitos</div></div>
