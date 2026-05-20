@@ -88,7 +88,7 @@
   <div class="header">
     <div>
       <h1>Panel de Inversiones</h1>
-      <p>Método Maximus Trading &nbsp;·&nbsp; 14 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
+      <p>Método Maximus Trading &nbsp;·&nbsp; 15 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
     </div>
     <button class="btn btn-primary" onclick="fetchAll()">&#8635; Actualizar precios</button>
   </div>
@@ -206,12 +206,13 @@ const POS = [
   {ticker:'MARA', dir:'Short',obj:'SHORT',           qty:4, entrada:10.29,  fecha:'13/04/2026'},
   {ticker:'KTOS', dir:'Long', obj:'MOMENTUM',          qty:1, entrada:56.74,  fecha:'12/05/2026'},
   {ticker:'CRS',  dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:422.00, fecha:'11/05/2026'},
-  {ticker:'ORCL', dir:'Long', obj:'ONEILL',            qty:1, entrada:189.34, fecha:'06/05/2026'},
+  {ticker:'FTI',  dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:74.55,  fecha:'20/05/2026'},
+  {ticker:'MXL',  dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:88.60,  fecha:'19/05/2026'},
+  {ticker:'KRYS', dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:295.00, fecha:'19/05/2026'},
   {ticker:'GGAL', dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:41.09,  fecha:'04/05/2026'},
   {ticker:'NEM',  dir:'Long', obj:'EXPLOSIVA',         qty:1, entrada:110.35, fecha:'04/05/2026'},
   {ticker:'CRDO', dir:'Long', obj:'EXPLOSIVA',        qty:1, entrada:180.42, fecha:'01/05/2026'},
   {ticker:'CAT',  dir:'Long', obj:'IDEA MES',          qty:1, entrada:890.62, fecha:'01/05/2026'},
-  {ticker:'ADI',  dir:'Long', obj:'ONEILL',             qty:1, entrada:368.34, fecha:'14/04/2026'},
 
 ];
 const HIST = [
@@ -232,6 +233,8 @@ const HIST = [
   {ticker:'GGAL', dir:'Short',obj:'—', qty:1, entrada:47.41, cierre:48.95, pnl:-1.54, rent:-0.0325,fCompra:'09/04/2026',fCierre:'09/04/2026'},
   {ticker:'AMAT', dir:'Long', obj:'—', qty:1, entrada:393.81,cierre:393.30,pnl:-0.51, rent:-0.0013,fCompra:'17/04/2026',fCierre:'17/04/2026'},
   {ticker:'WDC', dir:'Long',obj:'TORTUGA',qty:1,entrada:359.00,cierre:464.01,pnl:105.01,rent:0.2925,fCompra:'16/04/2026',fCierre:'18/05/2026'},
+  {ticker:'ADI', dir:'Long',obj:'ONEILL',qty:1,entrada:368.34,cierre:392.03,pnl:23.69,rent:0.0643,fCompra:'17/04/2026',fCierre:'20/05/2026'},
+  {ticker:'ORCL',dir:'Long',obj:'ONEILL',qty:1,entrada:189.34,cierre:179.75,pnl:-9.59,rent:-0.0507,fCompra:'06/05/2026',fCierre:'20/05/2026'},
   {ticker:'SOLS',dir:'Long',obj:'TORTUGA',qty:1,entrada:83.30,cierre:83.80,pnl:0.50,rent:0.0060,fCompra:'05/05/2026',fCierre:'15/05/2026'},
   {ticker:'JBL', dir:'Long',obj:'TORTUGA',qty:1,entrada:316.00,cierre:340.62,pnl:24.62,rent:0.0779,fCompra:'17/04/2026',fCierre:'15/05/2026'},
   {ticker:'CSCO',dir:'Long',obj:'IDEA MES',qty:1,entrada:96.37,cierre:116.73,pnl:20.36,rent:0.2113,fCompra:'11/05/2026',fCierre:'14/05/2026'},
@@ -319,7 +322,7 @@ function renderMetrics() {
   const totPct = totPnl != null && totCosto > 0 ? totPnl/totCosto : null;
   const winners = rows.filter(r => r.pnl != null && r.pnl > 0).length;
   const losers  = rows.filter(r => r.pnl != null && r.pnl < 0).length;
-  const PNL_REALIZADO = 85.05;
+  const PNL_REALIZADO = 99.15;
   // P&L combinado: usar 0 para no realizado si no hay precios aún
   const pnlNoRealizado = totPnl != null ? totPnl : 0;
   const totPnlCombinado = pnlNoRealizado + PNL_REALIZADO;
@@ -331,7 +334,7 @@ function renderMetrics() {
     <div class="metric"><div class="metric-lbl">Capital invertido activo</div><div class="metric-val">${f$(totCosto)}</div><div class="metric-sub">${POS.length} posiciones activas</div></div>
     <div class="metric"><div class="metric-lbl">Valor actual</div><div class="metric-val">${totValor!=null?f$(totValor):'—'}</div><div class="metric-sub">${hasPx?'Tiempo real':'Sin cotizaciones'}</div></div>
     <div class="metric"><div class="metric-lbl">P&amp;L no realizado</div><div class="metric-val ${cls(totPnl)}">${totPnl!=null?fPnl(totPnl):'—'}</div><div class="metric-sub">${totPct!=null?fPct(totPct):''}</div></div>
-    <div class="metric"><div class="metric-lbl">P&amp;L realizado</div><div class="metric-val pos">+$85.05</div><div class="metric-sub">Desde 06/03/2026</div></div>
+    <div class="metric"><div class="metric-lbl">P&amp;L realizado</div><div class="metric-val pos">+$99.15</div><div class="metric-sub">Desde 06/03/2026</div></div>
     <div class="metric"><div class="metric-lbl">Retorno total cartera</div><div class="metric-val ${retornoTotal!=null?(retornoTotal>=0?'pos':'neg'):''}">${retornoTotal!=null?fPct(retornoTotal):'—'}</div><div class="metric-sub">Realizadas + abiertas</div></div>
     <div class="metric"><div class="metric-lbl">Ganadoras / perdedoras</div><div class="metric-val">${hasPx?winners+' / '+losers:'—'}</div><div class="metric-sub">${POS.filter(p=>p.dir==='Short').length} short · ${POS.filter(p=>p.dir==='Long').length} long</div></div>
     <div class="metric"><div class="metric-lbl">Aportado (ARS)</div><div class="metric-val" style="font-size:16px">$9.040.000</div><div class="metric-sub">13 depósitos</div></div>
