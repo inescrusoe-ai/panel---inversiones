@@ -3,9 +3,9 @@ import json
 from datetime import datetime, timezone
 
 TICKERS = [
-    "META", "MSFT", "ALAB", "GH", "FTI", "MXL", "KRYS", "MRK", "JNJ", "BSX", "CACI",
-    "CRDO", "CAT", "NEM",
-    "GGAL", "CRS", "KTOS", "MARA"
+    "CRDO", "ALAB", "CRS", "MXL", "KRYS",
+    "MSFT", "GGAL", "GH", "KTOS", "BSX",
+    "META", "CACI", "CAT", "JNJ", "NEM"
 ]
 
 prices = {}
