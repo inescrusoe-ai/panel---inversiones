@@ -3,7 +3,7 @@ import json
 from datetime import datetime, timezone
 
 TICKERS = [
-    "CRDO", "ASTS", "ALAB", "CRS", "MXL", "KRYS",
+    "CRDO", "PANW", "IREN", "LLY", "ASTS", "ALAB", "CRS", "MXL", "KRYS",
     "MSFT", "GGAL", "GH", "BSX",
     "META", "CACI", "CAT", "JNJ", "NEM"
 ]
