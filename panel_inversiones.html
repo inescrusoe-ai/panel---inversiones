@@ -88,7 +88,7 @@
   <div class="header">
     <div>
       <h1>Panel de Inversiones</h1>
-      <p>Método Maximus Trading &nbsp;·&nbsp; 20 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
+      <p>Método Maximus Trading &nbsp;·&nbsp; 21 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
     </div>
     <button class="btn btn-primary" onclick="fetchAll()">&#8635; Actualizar precios</button>
   </div>
@@ -195,12 +195,14 @@
 
 <script>
 const POS = [
+  {ticker:'OSCR', dir:'Long', obj:'EXPLOSIVA',         qty:1.0067, entrada:29.80,  fecha:'16/06/2026'},
+  {ticker:'SNEX', dir:'Long', obj:'EXPLOSIVA',         qty:0.2160, entrada:138.90, fecha:'16/06/2026'},
+  {ticker:'SEZL', dir:'Long', obj:'EXPLOSIVA',         qty:0.2044, entrada:146.80, fecha:'16/06/2026'},
+  {ticker:'AMD',  dir:'Long', obj:'EXPLOSIVA',         qty:0.0550, entrada:545.76, fecha:'22/06/2026'},
   {ticker:'SM',   dir:'Long', obj:'LARGO PLAZO',       qty:0.8821, entrada:34.01,  fecha:'03/06/2026'},
-  {ticker:'MRVL', dir:'Long', obj:'LARGO PLAZO',       qty:0.1945, entrada:308.52, fecha:'03/06/2026'},
   {ticker:'LLY',  dir:'Long', obj:'LARGO PLAZO',       qty:0.3028, entrada:1056.91,fecha:'02/06/2026'},
   {ticker:'MSFT', dir:'Long', obj:'LARGO PLAZO',       qty:0.9889, entrada:444.95, fecha:'02/06/2026'},
   {ticker:'AMZN', dir:'Long', obj:'LARGO PLAZO',       qty:0.4983, entrada:260.94, fecha:'02/06/2026'},
-  {ticker:'SNDK', dir:'Long', obj:'EXPLOSIVA',         qty:0.0171, entrada:1750.92,fecha:'02/06/2026'},
   {ticker:'PBR',  dir:'Long', obj:'LARGO PLAZO',       qty:1.5806, entrada:18.98,  fecha:'01/06/2026'},
   {ticker:'FN',   dir:'Long', obj:'EXPLOSIVA',         qty:0.0468, entrada:640.69, fecha:'01/06/2026'},
   {ticker:'NOW',  dir:'Long', obj:'LARGO PLAZO',       qty:0.9556, entrada:136.03, fecha:'01/06/2026'},
@@ -209,8 +211,7 @@ const POS = [
   {ticker:'CRDO', dir:'Long', obj:'EXPLOSIVA',        qty:0.0908, entrada:220.15, fecha:'27/05/2026'},
   {ticker:'ASTS', dir:'Long', obj:'LARGO PLAZO',           qty:1.0000, entrada:130.00, fecha:'27/05/2026'},
   {ticker:'MXL',  dir:'Long', obj:'EXPLOSIVA',        qty:0.4039, entrada:99.04,  fecha:'27/05/2026'},
-  {ticker:'KRYS', dir:'Long', obj:'EXPLOSIVA',        qty:0.1305, entrada:306.44, fecha:'27/05/2026'},
-  {ticker:'GH',   dir:'Long', obj:'ONEILL',           qty:1.0263, entrada:126.67, fecha:'27/05/2026'},
+  {ticker:'GH',   dir:'Long', obj:'ONEILL',           qty:0.3947, entrada:126.67, fecha:'27/05/2026'},
   {ticker:'BSX',  dir:'Long', obj:'LARGO PLAZO (M)',  qty:1.3842, entrada:50.57,  fecha:'27/05/2026'},
   {ticker:'META', dir:'Long', obj:'LARGO PLAZO',      qty:1.0133, entrada:611.52, fecha:'27/05/2026'},
   {ticker:'CACI', dir:'Long', obj:'LARGO PLAZO (M)',  qty:0.1369, entrada:511.31, fecha:'27/05/2026'},
@@ -225,6 +226,10 @@ const HIST = [
   {ticker:'JNJ', dir:'Long',obj:'IDEA MES',qty:2.1135,entrada:231.84,cierre:221.79,pnl:-21.23,rent:-0.0434,fCompra:'27/05/2026',fCierre:'01/06/2026'},
   {ticker:'ALAB',dir:'Long',obj:'ONEILL',qty:0.8050,entrada:322.97,cierre:334.11,pnl:8.97,rent:0.0277,fCompra:'27/05/2026',fCierre:'06/06/2026'},
   {ticker:'NET', dir:'Long',obj:'ONEILL',qty:0.4800,entrada:270.83,cierre:251.75,pnl:-9.16,rent:-0.0333,fCompra:'02/06/2026',fCierre:'06/06/2026'},
+  {ticker:'SNDK',dir:'Long',obj:'EXPLOSIVA',qty:0.0171,entrada:1750.92,cierre:2063.69,pnl:5.36,rent:0.1787,fCompra:'01/06/2026',fCierre:'16/06/2026'},
+  {ticker:'MU',  dir:'Long',obj:'MOMENTUM',qty:0.4508,entrada:1109.13,cierre:1110.52,pnl:0.63,rent:0.0006,fCompra:'18/06/2026',fCierre:'18/06/2026'},
+  {ticker:'MRVL',dir:'Long',obj:'LARGO PLAZO',qty:0.1945,entrada:308.52,cierre:312.00,pnl:0.68,rent:0.0113,fCompra:'03/06/2026',fCierre:'18/06/2026'},
+  {ticker:'KRYS',dir:'Long',obj:'EXPLOSIVA',qty:0.1305,entrada:306.44,cierre:348.94,pnl:5.55,rent:0.1387,fCompra:'27/05/2026',fCierre:'24/06/2026'},
   {ticker:'CAT', dir:'Long',obj:'IDEA MES',qty:1.0991,entrada:882.61,cierre:909.06,pnl:29.08,rent:0.0299,fCompra:'27/05/2026',fCierre:'12/06/2026'},
   {ticker:'GS',  dir:'Long',obj:'IDEA MES',qty:0.9381,entrada:1034.00,cierre:1051.86,pnl:16.78,rent:0.0162,fCompra:'01/06/2026',fCierre:'12/06/2026'},
   {ticker:'MRK', dir:'Long',obj:'IDEA MES',qty:8.4451,entrada:114.86,cierre:117.93,pnl:31.71,rent:0.0327,fCompra:'01/06/2026',fCierre:'15/06/2026'},
