@@ -4,8 +4,8 @@ from datetime import datetime, timezone
 
 TICKERS = [
     "OSCR", "SNEX", "AMD", "SNDK", "STRL", "MU", "IOT", "VIST",
-    "FDS", "ISRG", "TRMB", "NFLX", "KO", "CVX", "JNJ", "TRV",
-    "UBER", "CNC", "GDX", "SM", "LLY", "MSFT", "AMZN", "PBR",
+    "ISRG", "NFLX", "KO", "CVX", "JNJ", "TRV",
+    "UBER", "CNC", "SM", "LLY", "MSFT", "AMZN", "PBR",
     "FN", "NOW", "IREN", "CRDO", "ASTS", "BSX", "META", "CACI", "NEM"
 ]
 
