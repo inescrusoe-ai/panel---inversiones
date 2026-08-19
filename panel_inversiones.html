@@ -88,7 +88,7 @@
   <div class="header">
     <div>
       <h1>Panel de Inversiones</h1>
-      <p>Método Maximus Trading &nbsp;·&nbsp; 30 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
+      <p>Método Maximus Trading &nbsp;·&nbsp; 34 posiciones activas &nbsp;·&nbsp; Precios: Yahoo Finance &nbsp;·&nbsp; <a href="https://inescrusoe-ai.github.io/panel---inversiones/panel_inversiones.html" target="_blank" style="color:var(--text2);text-decoration:underline;font-size:11px">🔗 Mi panel</a></p>
     </div>
     <button class="btn btn-primary" onclick="fetchAll()">&#8635; Actualizar precios</button>
   </div>
@@ -200,31 +200,35 @@ const POS = [
   {ticker:'AMD',  dir:'Long', obj:'EXPLOSIVA',         qty:0.0550, entrada:545.76, fecha:'22/06/2026'},
   {ticker:'SNDK', dir:'Long', obj:'EXPLOSIVA',         qty:0.0123, entrada:1624.00,fecha:'07/07/2026'},
   {ticker:'STRL', dir:'Long', obj:'EXPLOSIVA',         qty:0.0420, entrada:714.56, fecha:'09/07/2026'},
-  {ticker:'MU',   dir:'Long', obj:'EXPLOSIVA',         qty:0.0243, entrada:831.48, fecha:'15/07/2026'},
   {ticker:'IOT',  dir:'Long', obj:'EXPLOSIVA',         qty:1.5848, entrada:37.86,  fecha:'17/07/2026'},
   {ticker:'VIST', dir:'Long', obj:'EXPLOSIVA',         qty:0.4710, entrada:63.70,  fecha:'17/07/2026'},
-  {ticker:'ISRG', dir:'Long', obj:'LARGO PLAZO',       qty:0.1675, entrada:358.27, fecha:'21/07/2026'},
   {ticker:'NFLX', dir:'Long', obj:'LARGO PLAZO',       qty:0.8535, entrada:70.30,  fecha:'22/07/2026'},
-  {ticker:'KO',   dir:'Long', obj:'IDEA MES',          qty:3.1742, entrada:88.21,  fecha:'03/08/2026'},
-  {ticker:'CVX',  dir:'Long', obj:'IDEA MES',          qty:1.4394, entrada:194.52, fecha:'03/08/2026'},
-  {ticker:'JNJ',  dir:'Long', obj:'IDEA MES',          qty:1.0884, entrada:257.27, fecha:'03/08/2026'},
   {ticker:'TRV',  dir:'Long', obj:'IDEA MES',          qty:0.7389, entrada:378.94, fecha:'03/08/2026'},
   {ticker:'UBER', dir:'Long', obj:'EXPLOSIVA',         qty:0.8385, entrada:71.56,  fecha:'03/08/2026'},
   {ticker:'CNC',  dir:'Long', obj:'EXPLOSIVA',         qty:0.3182, entrada:62.85,  fecha:'03/08/2026'},
+  {ticker:'ORCL', dir:'Long', obj:'LARGO PLAZO',       qty:0.2153, entrada:139.37, fecha:'06/08/2026'},
+  {ticker:'HWM',  dir:'Long', obj:'LARGO PLAZO',       qty:0.2117, entrada:283.46, fecha:'11/08/2026'},
+  {ticker:'MPWR', dir:'Long', obj:'EXPLOSIVA',         qty:0.0279, entrada:1432.93,fecha:'12/08/2026'},
+  {ticker:'BTSG', dir:'Long', obj:'EXPLOSIVA',         qty:0.6669, entrada:59.98,  fecha:'12/08/2026'},
+  {ticker:'BBD',  dir:'Long', obj:'EXPLOSIVA',         qty:9.3168, entrada:3.22,   fecha:'12/08/2026'},
+  {ticker:'SOFI', dir:'Long', obj:'EXPLOSIVA',         qty:1.6287, entrada:18.42,  fecha:'14/08/2026'},
+  {ticker:'TSM',  dir:'Long', obj:'LARGO PLAZO',       qty:0.2867, entrada:418.58, fecha:'18/08/2026'},
+  {ticker:'NTRA', dir:'Long', obj:'EXPLOSIVA',         qty:0.1272, entrada:314.49, fecha:'18/08/2026'},
+  {ticker:'BAC',  dir:'Long', obj:'LARGO PLAZO',       qty:0.6224, entrada:64.27,  fecha:'18/08/2026'},
+  {ticker:'GGAL', dir:'Long', obj:'LARGO PLAZO',       qty:0.4748, entrada:42.12,  fecha:'19/08/2026'},
+  {ticker:'VNOM', dir:'Long', obj:'EXPLOSIVA',         qty:0.4545, entrada:44.00,  fecha:'19/08/2026'},
   {ticker:'SM',   dir:'Long', obj:'LARGO PLAZO',       qty:0.8821, entrada:34.01,  fecha:'03/06/2026'},
   {ticker:'LLY',  dir:'Long', obj:'LARGO PLAZO',       qty:0.3028, entrada:1056.91,fecha:'02/06/2026'},
   {ticker:'MSFT', dir:'Long', obj:'LARGO PLAZO',       qty:0.9889, entrada:444.95, fecha:'02/06/2026'},
-  {ticker:'AMZN', dir:'Long', obj:'LARGO PLAZO',       qty:0.4983, entrada:260.94, fecha:'02/06/2026'},
+  {ticker:'AMZN', dir:'Long', obj:'LARGO PLAZO',       qty:0.7300, entrada:260.28, fecha:'02/06/2026'},
   {ticker:'PBR',  dir:'Long', obj:'LARGO PLAZO',       qty:1.5806, entrada:18.98,  fecha:'01/06/2026'},
   {ticker:'FN',   dir:'Long', obj:'EXPLOSIVA',         qty:0.0468, entrada:640.69, fecha:'01/06/2026'},
   {ticker:'NOW',  dir:'Long', obj:'LARGO PLAZO',       qty:0.9556, entrada:136.03, fecha:'01/06/2026'},
   {ticker:'IREN', dir:'Long', obj:'LARGO PLAZO',       qty:0.8602, entrada:47.44,  fecha:'28/05/2026'},
-  {ticker:'CRDO', dir:'Long', obj:'EXPLOSIVA',        qty:0.0908, entrada:220.15, fecha:'27/05/2026'},
   {ticker:'ASTS', dir:'Long', obj:'LARGO PLAZO',           qty:1.0000, entrada:130.00, fecha:'27/05/2026'},
   {ticker:'BSX',  dir:'Long', obj:'LARGO PLAZO (M)',  qty:1.3842, entrada:50.57,  fecha:'27/05/2026'},
   {ticker:'META', dir:'Long', obj:'LARGO PLAZO',      qty:1.0133, entrada:611.52, fecha:'27/05/2026'},
   {ticker:'CACI', dir:'Long', obj:'LARGO PLAZO (M)',  qty:0.1369, entrada:511.31, fecha:'27/05/2026'},
-  {ticker:'NEM',  dir:'Long', obj:'EXPLOSIVA',        qty:0.3721, entrada:107.51, fecha:'27/05/2026'},
 ];
 const HIST = [
   {ticker:'LLY', dir:'Long',obj:'LARGO PLAZO',qty:0.2863,entrada:1135.00,cierre:1055.55,pnl:-22.76,rent:-0.0700,fCompra:'28/05/2026',fCierre:'02/06/2026'},
@@ -235,6 +239,14 @@ const HIST = [
   {ticker:'JNJ', dir:'Long',obj:'IDEA MES',qty:2.1135,entrada:231.84,cierre:221.79,pnl:-21.23,rent:-0.0434,fCompra:'27/05/2026',fCierre:'01/06/2026'},
   {ticker:'ALAB',dir:'Long',obj:'ONEILL',qty:0.8050,entrada:322.97,cierre:334.11,pnl:8.97,rent:0.0277,fCompra:'27/05/2026',fCierre:'06/06/2026'},
   {ticker:'NET', dir:'Long',obj:'ONEILL',qty:0.4800,entrada:270.83,cierre:251.75,pnl:-9.16,rent:-0.0333,fCompra:'02/06/2026',fCierre:'06/06/2026'},
+  {ticker:'ISRG',dir:'Long',obj:'LARGO PLAZO',qty:0.1675,entrada:358.27,cierre:402.05,pnl:7.33,rent:0.1223,fCompra:'21/07/2026',fCierre:'12/08/2026'},
+  {ticker:'MXL', dir:'Long',obj:'EXPLOSIVA',qty:0.4093,entrada:73.30,cierre:80.01,pnl:2.75,rent:0.0916,fCompra:'07/08/2026',fCierre:'14/08/2026'},
+  {ticker:'CRDO',dir:'Long',obj:'EXPLOSIVA',qty:0.0908,entrada:220.15,cierre:260.46,pnl:3.66,rent:0.1831,fCompra:'27/05/2026',fCierre:'18/08/2026'},
+  {ticker:'NEM', dir:'Long',obj:'EXPLOSIVA',qty:0.3721,entrada:107.51,cierre:118.39,pnl:4.05,rent:0.1012,fCompra:'27/05/2026',fCierre:'18/08/2026'},
+  {ticker:'CVX', dir:'Long',obj:'IDEA MES',qty:1.4394,entrada:194.52,cierre:204.78,pnl:14.77,rent:0.0527,fCompra:'03/08/2026',fCierre:'18/08/2026'},
+  {ticker:'MU',  dir:'Long',obj:'EXPLOSIVA',qty:0.0485,entrada:831.48,cierre:956.24,pnl:2.12,rent:0.0526,fCompra:'15/07/2026',fCierre:'18/08/2026'},
+  {ticker:'JNJ', dir:'Long',obj:'IDEA MES',qty:1.0884,entrada:257.27,cierre:270.48,pnl:14.38,rent:0.0513,fCompra:'03/08/2026',fCierre:'18/08/2026'},
+  {ticker:'KO',  dir:'Long',obj:'IDEA MES',qty:3.1742,entrada:88.21,cierre:89.93,pnl:5.46,rent:0.0195,fCompra:'03/08/2026',fCierre:'19/08/2026'},
   {ticker:'GDX', dir:'Long',obj:'EXPLOSIVA',qty:0.2655,entrada:75.32,cierre:90.07,pnl:3.92,rent:0.1958,fCompra:'03/08/2026',fCierre:'07/08/2026'},
   {ticker:'TRMB',dir:'Long',obj:'LARGO PLAZO',qty:1.1723,entrada:51.18,cierre:58.53,pnl:8.61,rent:0.1436,fCompra:'22/07/2026',fCierre:'10/08/2026'},
   {ticker:'FDS', dir:'Long',obj:'LARGO PLAZO',qty:0.2406,entrada:249.35,cierre:283.60,pnl:8.24,rent:0.1374,fCompra:'21/07/2026',fCierre:'10/08/2026'},
@@ -386,7 +398,7 @@ function renderMetrics() {
   const totPct = totPnl != null && totCosto > 0 ? totPnl/totCosto : null;
   const winners = rows.filter(r => r.pnl != null && r.pnl > 0).length;
   const losers  = rows.filter(r => r.pnl != null && r.pnl < 0).length;
-  const PNL_REALIZADO = 281.66;
+  const PNL_REALIZADO = 336.18;
   // P&L combinado: usar 0 para no realizado si no hay precios aún
   const pnlNoRealizado = totPnl != null ? totPnl : 0;
   const totPnlCombinado = pnlNoRealizado + PNL_REALIZADO;
@@ -398,7 +410,7 @@ function renderMetrics() {
     <div class="metric"><div class="metric-lbl">Capital invertido activo</div><div class="metric-val">${f$(totCosto)}</div><div class="metric-sub">${POS.length} posiciones activas</div></div>
     <div class="metric"><div class="metric-lbl">Valor actual</div><div class="metric-val">${totValor!=null?f$(totValor):'—'}</div><div class="metric-sub">${hasPx?'Tiempo real':'Sin cotizaciones'}</div></div>
     <div class="metric"><div class="metric-lbl">P&amp;L no realizado</div><div class="metric-val ${cls(totPnl)}">${totPnl!=null?fPnl(totPnl):'—'}</div><div class="metric-sub">${totPct!=null?fPct(totPct):''}</div></div>
-    <div class="metric"><div class="metric-lbl">P&amp;L realizado</div><div class="metric-val pos">+$281.66</div><div class="metric-sub">Desde 06/03/2026</div></div>
+    <div class="metric"><div class="metric-lbl">P&amp;L realizado</div><div class="metric-val pos">+$336.18</div><div class="metric-sub">Desde 06/03/2026</div></div>
     <div class="metric"><div class="metric-lbl">Retorno total cartera</div><div class="metric-val ${retornoTotal!=null?(retornoTotal>=0?'pos':'neg'):''}">${retornoTotal!=null?fPct(retornoTotal):'—'}</div><div class="metric-sub">Realizadas + abiertas</div></div>
     <div class="metric"><div class="metric-lbl">Ganadoras / perdedoras</div><div class="metric-val">${hasPx?winners+' / '+losers:'—'}</div><div class="metric-sub">${POS.filter(p=>p.dir==='Short').length} short · ${POS.filter(p=>p.dir==='Long').length} long</div></div>
     <div class="metric"><div class="metric-lbl">Aportado (ARS)</div><div class="metric-val" style="font-size:16px">$9.040.000</div><div class="metric-sub">13 depósitos</div></div>
