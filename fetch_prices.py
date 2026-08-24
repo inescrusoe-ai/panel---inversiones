@@ -5,9 +5,9 @@ from datetime import datetime, timezone
 TICKERS = [
     "OSCR", "SNEX", "AMD", "SNDK", "STRL", "IOT", "VIST", "NFLX",
     "TRV", "UBER", "CNC", "ORCL", "HWM", "MPWR", "BTSG", "BBD",
-    "SOFI", "TSM", "NTRA", "BAC", "GGAL", "VNOM", "SM", "LLY",
-    "MSFT", "AMZN", "PBR", "FN", "NOW", "IREN", "ASTS", "BSX",
-    "META", "CACI"
+    "SOFI", "TSM", "NTRA", "BAC", "GGAL", "VNOM", "STN", "CDW",
+    "SNX", "FPS", "Q", "BOIL", "GOOGL", "SM", "LLY", "MSFT",
+    "AMZN", "PBR", "FN", "NOW", "IREN", "ASTS", "BSX", "META", "CACI"
 ]
 
 prices = {}
